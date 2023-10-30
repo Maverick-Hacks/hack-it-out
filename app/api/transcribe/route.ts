@@ -2,18 +2,10 @@ import { NextResponse } from 'next/server'
 import axios from 'axios'
 
 export async function POST(request: Request) {
-  // Get formData from request
-
   const formData = await request.formData()
-  // FormData
-  /* 
-  file: File
-  model: string
-  response_format: string
-  propmt: string
-  language: string (optional)
-  */
+
   formData.append('model', 'whisper-1')
+  // formData.append('language', 'ta')
   console.log(formData)
   const apiKEY = formData.get('api_key') || process.env.OPENAI_API_KEY
 
@@ -27,7 +19,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    console.log('worked')
     const { data } = await axios.post('https://api.openai.com/v1/audio/transcriptions', formData, {
       headers: {
         Authorization: `Bearer ${apiKEY}`,
