@@ -1,9 +1,8 @@
 'use client'
 
-import Image from 'next/image'
-import { FormEvent, useState } from 'react'
+import { useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
-import { Label } from '@/components/ui/label'
+
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -28,12 +27,10 @@ import {
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { TranscriptionFormProps } from '@/types/dictionary'
 
-export default function TranscriptionForm() {
+export default function TranscriptionForm(props: TranscriptionFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [fileName, setFileName] = useState<string>('')
-  const [fileType, setFileType] = useState<string>('')
-  const [APIKey, setAPIKey] = useState<string>('')
 
   const { toast } = useToast()
 
@@ -57,7 +54,6 @@ export default function TranscriptionForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
     try {
-      console.log(values)
       const formData = new FormData()
       formData.set('file', values.file)
       formData.set('prompt', values.prompt)
@@ -65,7 +61,6 @@ export default function TranscriptionForm() {
       formData.set('api_key', values.APIKey)
 
       const { data } = await axios.post('/api/transcribe', formData)
-      console.log(data)
     } catch (error: any) {
       console.log(error)
       toast({
@@ -86,8 +81,8 @@ export default function TranscriptionForm() {
             render={({ field: { value, onChange, ...field } }) => (
               <FormItem>
                 <FormLabel>
-                  Choose your video or audio{' '}
-                  <span className="text-xs text-neutral-500">Max: 25MB</span>
+                  {props.form.file.content}
+                  <span className="text-xs text-neutral-500">{props.form.file.sub}: 25MB</span>
                 </FormLabel>
                 <FormControl>
                   <Input

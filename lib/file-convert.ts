@@ -2,7 +2,7 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
 import { v4 as uuid } from 'uuid'
 
 const ffmpeg = createFFmpeg({
-  corePath: `http://localhost:3000/ffmpeg/dist/ffmpeg-core.js`,
+  corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
 })
 
 export const fileConvert = async (file: Blob) => {
