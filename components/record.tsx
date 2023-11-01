@@ -8,7 +8,15 @@ import { ChevronRightIcon, Loader2 } from 'lucide-react'
 import { fileConvert } from '@/lib/file-convert'
 import { RecordProps } from '@/types/dictionary'
 
-export default function RecordComponent(props: RecordProps) {
+import { Locale } from '@/i18n-config'
+
+type ExtendedRecordProps = RecordProps & {
+  lang: Locale
+}
+
+export default function RecordComponent(props: ExtendedRecordProps) {
+  const lang = props.lang
+
   const webcamRef = useRef<Webcam | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
 
@@ -98,6 +106,8 @@ export default function RecordComponent(props: RecordProps) {
       const formData = new FormData()
       formData.append('file', output, output.name)
       formData.append('model', 'whisper-1')
+
+      formData.append('language', lang)
 
       setStatus('Transcribing')
 

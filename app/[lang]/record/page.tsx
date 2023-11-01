@@ -8,7 +8,7 @@ export default async function RecordPage({ params }: { params: { lang: Locale } 
 
   return (
     <main className="p-4">
-      <RecordComponent data={dict.record.data} />
+      <RecordComponent data={dict.record.data} lang={params.lang} />
     </main>
   )
 }

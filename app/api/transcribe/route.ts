@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   const formData = await request.formData()
 
   formData.append('model', 'whisper-1')
-  // formData.append('language', 'ta')
+
   const apiKEY = formData.get('api_key') || process.env.OPENAI_API_KEY
 
   if (!apiKEY) {
