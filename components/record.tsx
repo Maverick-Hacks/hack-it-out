@@ -5,9 +5,10 @@ import Webcam from 'react-webcam'
 
 import { CheckCircledIcon, LockClosedIcon } from '@radix-ui/react-icons'
 import { ChevronRightIcon, Loader2 } from 'lucide-react'
-import { fileConvert } from './actions/file-convert'
+import { fileConvert } from '@/lib/file-convert'
+import { RecordProps } from '@/types/dictionary'
 
-export default function RecordPage() {
+export default function RecordComponent(props: RecordProps) {
   const webcamRef = useRef<Webcam | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
 
@@ -105,7 +106,6 @@ export default function RecordPage() {
         body: formData,
       })
       const results = await upload.json()
-      console.log(results)
 
       if (upload.ok) {
         setIsSuccess(true)
@@ -204,13 +204,15 @@ export default function RecordPage() {
             <div className="flex flex-row items-center space-x-1">
               <LockClosedIcon />
               <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
-                Video is not stored on our servers, and will go away as soon as you leave the page.
+                {props.data.privacySave}
               </p>
             </div>
           </div>
           <div className="mt-8 flex flex-col">
             <div>
-              <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">Transcript</h2>
+              <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">
+                {props.data.transcript}
+              </h2>
               <p className="prose prose-sm max-w-none">
                 {transcript.length > 0
                   ? transcript
@@ -218,7 +220,9 @@ export default function RecordPage() {
               </p>
             </div>
             <div className="mt-8">
-              <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">Feedback</h2>
+              <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">
+                {props.data.feedback}
+              </h2>
               <div className="mt-4 flex min-h-[100px] gap-2.5 rounded-lg border border-[#EEEEEE] bg-[#FAFAFA] p-4 text-sm leading-6 text-gray-900">
                 <p className="prose prose-sm max-w-none">{generatedFeedback}</p>
               </div>
@@ -230,10 +234,10 @@ export default function RecordPage() {
           {recordingPermission ? (
             <div className="mx-auto flex w-full max-w-[1080px] flex-col justify-center">
               <h2 className="mb-2 text-left text-2xl font-semibold text-[#1D2B3A]">
-                {`Tell me about yourself. Why don${`’`}t you walk me through your resume?`}
+                {props.data.heading}
               </h2>
               <span className="mb-4 text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
-                Asked by top companies like Google, Facebook and more
+                {props.data.sub}
               </span>
               <div className="relative aspect-[16/9] w-full max-w-[1080px] overflow-hidden rounded-lg bg-[#1D2B3A] shadow-md ring-1 ring-gray-900/5">
                 {!cameraLoaded && (
@@ -264,7 +268,7 @@ export default function RecordPage() {
                   <div className="absolute flex h-full w-full items-center justify-center">
                     <div className="relative h-[112px] w-[112px] rounded-lg object-cover text-[2rem]">
                       <div className="flex h-[112px] w-[112px] items-center justify-center rounded-[0.5rem] bg-[#4171d8] !text-white">
-                        Loading...
+                        {props.data.loading}...
                       </div>
                     </div>
                   </div>
@@ -291,7 +295,7 @@ export default function RecordPage() {
                                 onClick={() => restartVideo()}
                                 className="hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] group flex scale-100 items-center justify-center gap-x-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-[#1E2B3A] no-underline  transition-all duration-75 active:scale-95"
                               >
-                                Restart
+                                {props.data.restart}
                               </button>
                             )}
                             <button
@@ -311,7 +315,7 @@ export default function RecordPage() {
                                   </div>
                                 ) : (
                                   <div className="flex items-center justify-center gap-x-2">
-                                    <span>Process transcript</span>
+                                    <span>{props.data.process_transcript}</span>
                                     <ChevronRightIcon className="h-5 w-5" />
                                   </div>
                                 )}
@@ -352,7 +356,7 @@ export default function RecordPage() {
               <div className="mt-4 flex flex-row items-center space-x-1">
                 <LockClosedIcon />
                 <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
-                  Video is not stored on our servers, it is solely used for transcription.
+                  {props.data.privacy}
                 </p>
               </div>
             </div>
@@ -360,10 +364,7 @@ export default function RecordPage() {
             <div className="mx-auto flex w-full max-w-[1080px] flex-col justify-center">
               <div className="relative flex w-full max-w-[1080px] flex-col items-center justify-center overflow-hidden rounded-lg bg-[#1D2B3A] shadow-md ring-1 ring-gray-900/5 md:aspect-[16/9]">
                 <p className="max-w-3xl text-center text-lg font-medium text-white">
-                  Camera permission is denied. We don{`'`}t store your attempts anywhere, but we
-                  understand not wanting to give us access to your camera. Try again by opening this
-                  page in an incognito window {`(`}or enable permissions in your browser settings
-                  {`)`}.
+                  {props.data.camera_denied}
                 </p>
               </div>
             </div>
