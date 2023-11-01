@@ -117,50 +117,39 @@ export default function RecordComponent(props: RecordProps) {
           setTranscript(results.data.text)
         }
 
-        console.log('Uploaded successfully!')
-
         await Promise.allSettled([new Promise((resolve) => setTimeout(resolve, 800))]).then(() => {
           setCompleted(true)
-          console.log('Success!')
         })
 
-        if (transcript) {
-          const prompt = `Please give feedback on the following interview question: ${'tell me about yourself'} given the following transcript: ${
-            results.transcript
-          }. ${"Please also give feedback on the candidate's communication skills. Make sure their response is structured (perhaps using the STAR or PAR frameworks)."} \n\n\ Feedback on the candidate's response:`
+        if (results?.data?.text.length > 0) {
+          const response = await fetch('/api/feedback', {
+            method: 'POST',
+            body: JSON.stringify({
+              question: results.data.text,
+            }),
+          })
 
-          setGeneratedFeedback('')
-          // const response = await fetch('/api/generate', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: JSON.stringify({
-          //     prompt,
-          //   }),
-          // })
-
-          // if (!response.ok) {
-          //   throw new Error(response.statusText)
-          // }
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
 
           // This data is a ReadableStream
-          const data = 'You should try to improve yourself'
+          const data = response.body
           if (!data) {
             return
           }
 
-          // const reader = data.getReader()
-          // const decoder = new TextDecoder()
-          // let done = false
+          const reader = data.getReader()
+          const decoder = new TextDecoder()
+          let done = false
 
-          // while (!done) {
-          //   const { value, done: doneReading } = await reader.read()
-          //   done = doneReading
-          //   const chunkValue = decoder.decode(value)
-          //   setGeneratedFeedback((prev: any) => prev + chunkValue)
-          // }
-          setGeneratedFeedback(data)
+          while (!done) {
+            const { value, done: doneReading } = await reader.read()
+            done = doneReading
+            const chunkValue = decoder.decode(value)
+
+            setGeneratedFeedback((prev: any) => prev + chunkValue)
+          }
         }
       } else {
         console.error('Upload failed.')
@@ -299,7 +288,9 @@ export default function RecordComponent(props: RecordProps) {
                               </button>
                             )}
                             <button
-                              onClick={handleDownload}
+                              onClick={() => {
+                                handleDownload()
+                              }}
                               disabled={isSubmitting}
                               className="hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] group flex min-w-[140px] scale-100 items-center justify-center rounded-full bg-[#1E2B3A] px-4 py-2 text-[13px] font-semibold text-white no-underline  transition-all duration-75 active:scale-95  disabled:cursor-not-allowed"
                               style={{
