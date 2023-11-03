@@ -13,22 +13,6 @@ export const metadata: Metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  openGraph: {
-    title: 'Healthify: Your Virtual Doctor',
-    description: 'Your Virtual Doctor',
-    url: 'https://hack-it-out.vercel.app/',
-    siteName: 'Healthify',
-    locale: 'en-US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://hack-it-out.vercel.app/og.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Healthify',
-      },
-    ],
-  },
 }
 
 export async function generateStaticParams() {
