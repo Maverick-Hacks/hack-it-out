@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={params.lang}>
-      <body className={inter.className}>
+      <body className={inter.className + ' flex min-h-screen flex-col'}>
         {children}
         <Footer />
       </body>

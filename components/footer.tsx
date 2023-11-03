@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="px mb-3 mt-5 flex h-16 w-full flex-col items-center justify-between space-y-3 border-t px-[10%] pt-4 text-center sm:mb-0 sm:h-20 sm:flex-row sm:pt-2 ">
+    <footer className="px mb-3 mt-auto flex h-16 w-full flex-col items-center justify-between space-y-3 border-t px-[10%] pb-2 pt-4 text-center sm:mb-0 sm:h-20 sm:flex-row sm:pt-2 ">
       <div>
         Powered by{' '}
         <a
@@ -21,7 +21,7 @@ export default function Footer() {
           Vercel Edge Functions
         </a>
       </div>
-      <div className="flex space-x-4 pb-4 sm:pb-0">
+      <div className="flex space-x-4">
         <Link
           href="https://github.com/abhinandarun-02/hack-it-out"
           className="group"
