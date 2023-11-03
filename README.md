@@ -24,7 +24,7 @@
 
 ## Model Used
 
-This App runs with OpenAI `gpt-3.5-turbo` for the. We are also trying to develop use langchain for better output generation.
+This App runs with OpenAI `gpt-3.5-turbo`. We are also trying to develop using langchain and local llm's like Llama for better output generation.
 
 ## Running locally
 
