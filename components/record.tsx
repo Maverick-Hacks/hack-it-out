@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import Webcam from 'react-webcam'
 
 import { CheckCircledIcon, LockClosedIcon } from '@radix-ui/react-icons'
-import { ChevronRightIcon, Loader2 } from 'lucide-react'
+import { ChevronRightIcon, Loader2, RotateCcw } from 'lucide-react'
 import { fileConvert } from '@/lib/file-convert'
 import { RecordProps } from '@/types/dictionary'
 
@@ -251,18 +251,35 @@ export default function RecordComponent(props: ExtendedRecordProps) {
                         {new Date(seconds * 1000).toISOString().slice(14, 19)}
                       </span>
                     </div>
-                    <Webcam
-                      mirrored
-                      audio
-                      muted
-                      ref={webcamRef}
-                      videoConstraints={videoConstraints}
-                      onUserMedia={handleUserMedia}
-                      onUserMediaError={(error) => {
-                        setRecordingPermission(false)
-                      }}
-                      className="absolute z-10 h-auto min-h-[100%] w-auto min-w-[100%] object-cover"
-                    />
+                    {recordedChunks.length > 0 ? (
+                      <div className="z-10 blur-lg">
+                        <Webcam
+                          mirrored
+                          audio
+                          muted
+                          ref={webcamRef}
+                          videoConstraints={videoConstraints}
+                          onUserMedia={handleUserMedia}
+                          onUserMediaError={(error) => {
+                            setRecordingPermission(false)
+                          }}
+                          className="h-auto min-h-[100%] w-auto min-w-[100%] object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <Webcam
+                        mirrored
+                        audio
+                        muted
+                        ref={webcamRef}
+                        videoConstraints={videoConstraints}
+                        onUserMedia={handleUserMedia}
+                        onUserMediaError={(error) => {
+                          setRecordingPermission(false)
+                        }}
+                        className="z-10 h-auto min-h-[100%] w-auto min-w-[100%] bg-black object-cover"
+                      />
+                    )}
                   </div>
                   {loading && (
                     <div className="absolute flex h-full w-full items-center justify-center">
@@ -275,8 +292,8 @@ export default function RecordComponent(props: ExtendedRecordProps) {
                   )}
 
                   {cameraLoaded && (
-                    <div className="absolute bottom-0 left-0 z-50 flex h-[82px] w-full items-center justify-center">
-                      {recordedChunks.length > 0 ? (
+                    <div className="absolute left-1/2 top-1/2 z-10 flex w-full -translate-x-1/2 -translate-y-1/2 scale-100 transform items-center justify-center">
+                      {recordedChunks.length > 0 && (
                         <>
                           {isSuccess ? (
                             <button
@@ -289,12 +306,13 @@ export default function RecordComponent(props: ExtendedRecordProps) {
                               <CheckCircledIcon className="mx-auto h-5 w-5" />
                             </button>
                           ) : (
-                            <div className="flex flex-row gap-2">
+                            <div className="flex flex-row gap-8">
                               {!isSubmitting && (
                                 <button
                                   onClick={() => restartVideo()}
-                                  className="hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] group flex scale-100 items-center justify-center gap-x-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-[#1E2B3A] no-underline  transition-all duration-75 active:scale-95"
+                                  className="group z-10 flex scale-100 transform items-center justify-center gap-x-2 rounded-full bg-slate-200 px-4 py-2 text-[#1E2B3A] no-underline opacity-50 transition-all  duration-75 hover:opacity-100 active:scale-95"
                                 >
+                                  <RotateCcw className="h-10 w-5" />
                                   {props.data.restart}
                                 </button>
                               )}
@@ -303,7 +321,7 @@ export default function RecordComponent(props: ExtendedRecordProps) {
                                   handleDownload()
                                 }}
                                 disabled={isSubmitting}
-                                className="hover:[linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #0D2247] group flex min-w-[140px] scale-100 items-center justify-center rounded-full bg-[#1E2B3A] px-4 py-2 text-[13px] font-semibold text-white no-underline  transition-all duration-75 active:scale-95  disabled:cursor-not-allowed"
+                                className="group left-3/4 flex scale-100 items-center justify-center rounded-full bg-[#1E2B3A] px-4 py-2 text-[16px] font-semibold text-white no-underline transition-all  duration-75 hover:bg-[#17212d] active:scale-95  disabled:cursor-not-allowed"
                                 style={{
                                   boxShadow:
                                     '0px 1px 4px rgba(13, 34, 71, 0.17), inset 0px 0px 0px 1px #061530, inset 0px 0px 0px 2px rgba(255, 255, 255, 0.1)',
@@ -318,7 +336,7 @@ export default function RecordComponent(props: ExtendedRecordProps) {
                                   ) : (
                                     <div className="flex items-center justify-center gap-x-2">
                                       <span>{props.data.process_transcript}</span>
-                                      <ChevronRightIcon className="h-5 w-5" />
+                                      🚀
                                     </div>
                                   )}
                                 </span>
@@ -326,28 +344,29 @@ export default function RecordComponent(props: ExtendedRecordProps) {
                             </div>
                           )}
                         </>
-                      ) : (
-                        <div className="absolute bottom-[6px] left-5 right-5 md:bottom-5">
-                          <div className="flex flex-col items-center justify-center gap-2 lg:mt-4">
-                            {capturing ? (
-                              <div
-                                id="stopTimer"
-                                onClick={handleStopCaptureClick}
-                                className="flex h-10 w-10 scale-100 cursor-pointer flex-col items-center justify-center rounded-full bg-transparent text-white ring-4  ring-white duration-75 hover:shadow-xl active:scale-95"
-                              >
-                                <div className="h-5 w-5 cursor-pointer rounded bg-red-500"></div>
-                              </div>
-                            ) : (
-                              <button
-                                id="startTimer"
-                                onClick={handleStartCaptureClick}
-                                className="flex h-8 w-8 scale-100 flex-col items-center justify-center rounded-full bg-red-500 text-white ring-4 ring-white ring-offset-2 ring-offset-gray-500 duration-75 hover:shadow-xl active:scale-95 sm:h-8 sm:w-8"
-                              ></button>
-                            )}
-                            <div className="w-12"></div>
+                      )}{' '}
+                    </div>
+                  )}
+                  {recordedChunks.length == 0 && (
+                    <div className="absolute bottom-5 left-5 right-5 z-10 md:bottom-5">
+                      <div className="flex flex-col items-center justify-center gap-2 lg:mt-4">
+                        {capturing ? (
+                          <div
+                            id="stopTimer"
+                            onClick={handleStopCaptureClick}
+                            className="flex h-10 w-10 scale-100 cursor-pointer flex-col items-center justify-center rounded-full bg-transparent text-white ring-4  ring-white duration-75 hover:shadow-xl active:scale-95"
+                          >
+                            <div className="h-5 w-5 cursor-pointer rounded bg-red-500"></div>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <button
+                            id="startTimer"
+                            onClick={handleStartCaptureClick}
+                            className="flex h-8 w-8 scale-100 flex-col items-center justify-center rounded-full bg-red-500 text-white ring-4 ring-white ring-offset-2 ring-offset-gray-500 duration-75 hover:shadow-xl active:scale-95 sm:h-8 sm:w-8"
+                          ></button>
+                        )}
+                        <div className="w-12"></div>
+                      </div>
                     </div>
                   )}
                   <div
