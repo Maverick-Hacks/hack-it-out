@@ -22,6 +22,7 @@ export default async function RecordPage({ params }: { params: { lang: Locale } 
         <div className="flex cursor-pointer font-medium text-blue-600 hover:underline dark:text-blue-500">
           {params.lang == 'en' && <Link href="/hi">हिंदी</Link>}
           {params.lang == 'hi' && <Link href="/en">English</Link>}
+          {params.lang == 'ta' && <Link href="/en">English</Link>}
           <ChevronRight />
         </div>
       </div>
