@@ -4,11 +4,13 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import Webcam from 'react-webcam'
 
 import { CheckCircledIcon, LockClosedIcon } from '@radix-ui/react-icons'
-import { ChevronRightIcon, Loader2 } from 'lucide-react'
+import { ChevronRight, ChevronRightIcon, Loader2 } from 'lucide-react'
 import { fileConvert } from '@/lib/file-convert'
 import { RecordProps } from '@/types/dictionary'
 
 import { Locale } from '@/i18n-config'
+import { ChatWindow } from './chat'
+import Feedback from './feedback'
 
 type ExtendedRecordProps = RecordProps & {
   lang: Locale
@@ -190,43 +192,47 @@ export default function RecordComponent(props: ExtendedRecordProps) {
   return (
     <div className="relative flex w-full flex-col overflow-x-hidden bg-[#FCFCFC] px-4 py-2 pt-2 md:px-8">
       {completed ? (
-        <div className="mx-auto mt-[2vh] flex w-full max-w-[720px] flex-col overflow-y-auto pb-8 md:pb-12">
-          <div className="relative flex w-full max-w-[720px] flex-col items-center justify-center overflow-hidden rounded-lg bg-[#1D2B3A] shadow-md ring-1 ring-gray-900/5 md:aspect-[16/9]">
-            <video className="h-full w-full rounded-lg" controls crossOrigin="anonymous" autoPlay>
-              <source
-                src={URL.createObjectURL(new Blob(recordedChunks, { type: 'video/mp4' }))}
-                type="video/mp4"
-              />
-            </video>
-          </div>
-          <div className="mt-2 flex flex-col items-center space-y-1 md:mt-4 md:flex-row md:justify-between md:space-y-0">
-            <div className="flex flex-row items-center space-x-1">
-              <LockClosedIcon />
-              <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
-                {props.data.privacySave}
-              </p>
+        <div className="mt-[2vh] flex max-w-[720px] flex-col gap-4 pb-8 max-2xl:mx-auto md:pb-12 2xl:max-w-none 2xl:flex-row">
+          <div className="flex w-full flex-col">
+            <div className="max:2xl:max-w-[540px] relative flex w-full max-w-[720px] flex-col items-center justify-center overflow-hidden rounded-lg bg-[#1D2B3A] shadow-md ring-1 ring-gray-900/5 md:aspect-[16/9]">
+              <video className="h-full w-full rounded-lg" controls crossOrigin="anonymous" autoPlay>
+                <source
+                  src={URL.createObjectURL(new Blob(recordedChunks, { type: 'video/mp4' }))}
+                  type="video/mp4"
+                />
+              </video>
             </div>
-          </div>
-          <div className="mt-8 flex flex-col">
-            <div>
-              <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">
-                {props.data.transcript}
-              </h2>
-              <p className="prose prose-sm max-w-none">
-                {transcript.length > 0
-                  ? transcript
-                  : "Don't think you said anything. Want to try again?"}
-              </p>
+            <div className="mt-2 flex flex-col items-center space-y-1 md:mt-4 md:flex-row md:justify-between md:space-y-0">
+              <div className="flex flex-row items-center space-x-1">
+                <LockClosedIcon />
+                <p className="text-[14px] font-normal leading-[20px] text-[#1a2b3b]">
+                  {props.data.privacySave}
+                </p>
+              </div>
             </div>
-            <div className="mt-8">
-              <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">
-                {props.data.feedback}
-              </h2>
-              <div className="mt-4 flex min-h-[100px] gap-2.5 rounded-lg border border-[#EEEEEE] bg-[#FAFAFA] p-4 text-sm leading-6 text-gray-900">
-                <p className="prose prose-sm max-w-none">{generatedFeedback}</p>
+            <div className="mt-8 flex flex-col">
+              <div>
+                <h2 className="mb-2 text-left text-xl font-semibold text-[#1D2B3A]">
+                  {props.data.transcript}
+                </h2>
+                <p className="prose prose-sm max-w-none">
+                  {transcript.length > 0
+                    ? transcript
+                    : "Don't think you said anything. Want to try again?"}
+                </p>
               </div>
             </div>
           </div>
+
+          <ChatWindow
+            endpoint="api/chat"
+            titleText="🧑‍⚕️ Ask the AI Doctor"
+            placeholder="I'm an LLM pretending to be a Doctor! Ask me your doubts!"
+            feedback={generatedFeedback}
+            emptyStateComponent={
+              <Feedback title={props.data.feedback} feedback={generatedFeedback} />
+            }
+          />
         </div>
       ) : (
         <div className="flex h-full w-full flex-col items-center">
