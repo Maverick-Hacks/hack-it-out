@@ -22,7 +22,9 @@
       "loading": "Loading",
       "restart": "Restart",
       "process_transcript": "Process Transcript",
-      "camera_denied": "Camera permission is denied. We don't store your attempts anywhere, but we understand not wanting to give us access to your camera. Try again by opening this page in an incognito window or enable permissions in your browser settings"
+      "camera_denied": "Camera permission is denied. We don't store your attempts anywhere, but we understand not wanting to give us access to your camera. Try again by opening t,his page in an incognito window or enable permissions in your browser settings",
+      "chat_title": "Ask the AI Doctor",
+      "chat_placeholder": "I'm an LLM pretending to be a Doctor! Ask me your doubts!"
     }
   }
 }

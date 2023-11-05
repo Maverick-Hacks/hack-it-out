@@ -28,5 +28,7 @@ export type RecordProps = {
     restart: string
     process_transcript: string
     camera_denied: string
+    chat_title: string
+    chat_placeholder: string
   }
 }

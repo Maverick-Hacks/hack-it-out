@@ -226,8 +226,8 @@ export default function RecordComponent(props: ExtendedRecordProps) {
 
           <ChatWindow
             endpoint="api/chat"
-            titleText="🧑‍⚕️ Ask the AI Doctor"
-            placeholder="I'm an LLM pretending to be a Doctor! Ask me your doubts!"
+            titleText={'🧑‍⚕️ ' + props.data.chat_title}
+            placeholder={props.data.chat_placeholder}
             feedback={generatedFeedback}
             emptyStateComponent={
               <Feedback title={props.data.feedback} feedback={generatedFeedback} />
