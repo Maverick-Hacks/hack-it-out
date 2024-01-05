@@ -28,10 +28,23 @@ This App runs with OpenAI `gpt-3.5-turbo`. We are also trying to develop using l
 
 ## Running locally
 
+1. Clone & create this repo locally with the following command:
+
+```bash
+git clone https://github.com/abhinandarun-02/healthify.git
+```
+
+2. Install dependencies using npm:
+
 ```bash
 npm install
 ```
+3. Copy `.env.example` to `.env` and update the variables.
 
+```sh
+cp .env.example .env.local
+```
+4. Start the development server:
 ```bash
 npm run dev
 ```
