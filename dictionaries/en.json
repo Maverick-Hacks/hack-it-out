@@ -1,0 +1,30 @@
+{
+  "transcribe": {
+    "form": {
+      "file": {
+        "content": "Choose your video or audio",
+        "sub": "Max: "
+      },
+      "prompt": {
+        "content": " Write a prompt",
+        "sub": "You can improve your transcription with a prompt"
+      }
+    }
+  },
+  "record": {
+    "data": {
+      "heading": "Tell me your medical problems",
+      "transcript": "Transcript",
+      "feedback": "Feedback",
+      "sub": "AI Doctor",
+      "privacy": "Video is not stored on our servers, it is solely used for transcription.",
+      "privacySave": "Video is not stored on our servers, and will go away as soon as you leave the page.",
+      "loading": "Loading",
+      "restart": "Restart",
+      "process_transcript": "Process Transcript",
+      "camera_denied": "Camera permission is denied. We don't store your attempts anywhere, but we understand not wanting to give us access to your camera. Try again by opening t,his page in an incognito window or enable permissions in your browser settings",
+      "chat_title": "Ask the AI Doctor",
+      "chat_placeholder": "I'm an LLM pretending to be a Doctor! Ask me your doubts!"
+    }
+  }
+}
